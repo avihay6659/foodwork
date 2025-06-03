@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>השלמת תשלום</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* אנימציה ברקע */
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.light-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: lightDance 8s ease-in-out infinite;
+}
+
+.light-orb:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, #FF6B6B 0%, #FF8E53 50%, transparent 100%);
+    top: 15%;
+    left: 10%;
+    animation-delay: 0s;
+    box-shadow: 0 0 40px #FF6B6B, 0 0 80px #FF6B6B;
+}
+
+.light-orb:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, #4ECDC4 0%, #44A08D 50%, transparent 100%);
+    top: 20%;
+    right: 15%;
+    animation-delay: 2s;
+    box-shadow: 0 0 60px #4ECDC4, 0 0 120px #4ECDC4;
+}
+
+.light-orb:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #FFE66D 0%, #FF6B35 50%, transparent 100%);
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+    box-shadow: 0 0 50px #FFE66D, 0 0 100px #FFE66D;
+}
+
+.light-orb:nth-child(4) {
+    width: 130px;
+    height: 130px;
+    background: radial-gradient(circle, #B06AB3 0%, #4568DC 50%, transparent 100%);
+    bottom: 30%;
+    right: 20%;
+    animation-delay: 6s;
+    box-shadow: 0 0 45px #B06AB3, 0 0 90px #B06AB3;
+}
+
+@keyframes lightDance {
+    0%, 100% {
+        transform: translateY(0px) translateX(0px) scale(1);
+        opacity: 0.4;
+    }
+    25% {
+        transform: translateY(-20px) translateX(15px) scale(1.1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-40px) translateX(-10px) scale(0.9);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translateY(-20px) translateX(-20px) scale(1.05);
+        opacity: 0.5;
+    }
+}
+
+.dynamic-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(255, 107, 107, 0.08) 0%,
+        rgba(78, 205, 196, 0.08) 25%,
+        rgba(255, 230, 109, 0.08) 50%,
+        rgba(176, 106, 179, 0.08) 75%,
+        rgba(255, 154, 139, 0.08) 100%);
+    animation: colorWave 12s ease-in-out infinite;
+    z-index: -2;
+}
+
+@keyframes colorWave {
+    0%, 100% {
+        background: linear-gradient(45deg, 
+            rgba(255, 107, 107, 0.08) 0%,
+            rgba(78, 205, 196, 0.08) 25%,
+            rgba(255, 230, 109, 0.08) 50%,
+            rgba(176, 106, 179, 0.08) 75%,
+            rgba(255, 154, 139, 0.08) 100%);
+    }
+    50% {
+        background: linear-gradient(135deg, 
+            rgba(78, 205, 196, 0.12) 0%,
+            rgba(255, 230, 109, 0.12) 25%,
+            rgba(176, 106, 179, 0.12) 50%,
+            rgba(255, 154, 139, 0.12) 75%,
+            rgba(255, 107, 107, 0.12) 100%);
+    }
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px 0;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(78, 205, 196, 0.3);
+    animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+    from {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(78, 205, 196, 0.3);
+    }
+    to {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 107, 107, 0.5);
+    }
+}
+
+.payment-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.order-summary {
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(40, 40, 40, 0.8));
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 12px 40px rgba(78, 205, 196, 0.2), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(78, 205, 196, 0.3);
+}
+
+.order-summary h2 {
+    color: #4ECDC4;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    background: linear-gradient(45deg, #4ECDC4, #FF6B6B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-name {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.item-quantity {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.item-price {
+    color: #4ECDC4;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.total-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid rgba(78, 205, 196, 0.3);
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.final-total {
+    background: linear-gradient(45deg, rgba(78, 205, 196, 0.2), rgba(255, 107, 107, 0.2));
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #4ECDC4;
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.2);
+}
+
+.payment-form {
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(40, 40, 40, 0.8));
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 12px 40px rgba(255, 107, 107, 0.2), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 107, 107, 0.3);
+}
+
+.payment-form h2 {
+    color: #FF6B6B;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    text-align: center;
+    background: linear-gradient(45deg, #FF6B6B, #FFE66D);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.payment-tabs {
+    display: flex;
+    margin-bottom: 25px;
+    background: rgba(42, 42, 42, 0.5);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-button.active {
+    background: linear-gradient(145deg, rgba(78, 205, 196, 0.3), rgba(255, 107, 107, 0.2));
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+}
+
+.tab-button:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #ffffff;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(42, 42, 42, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: rgba(78, 205, 196, 0.5);
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.2);
+    background: rgba(42, 42, 42, 0.9);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 15px;
+}
+
+.bit-section {
+    display: none;
+    text-align: center;
+    padding: 30px 0;
+}
+
+.bit-section.active {
+    display: block;
+}
+
+.bit-logo {
+    font-size: 3rem;
+    color: #00A8E6;
+    margin-bottom: 20px;
+}
+
+.bit-info {
+    background: rgba(0, 168, 230, 0.1);
+    border: 2px solid rgba(0, 168, 230, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.pay-button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(145deg, rgba(78, 205, 196, 0.8), rgba(255, 107, 107, 0.6));
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 25px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 25px rgba(78, 205, 196, 0.4);
+}
+
+.pay-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+.pay-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.pay-button:hover {
+    background: linear-gradient(145deg, rgba(255, 107, 107, 0.9), rgba(255, 230, 109, 0.7));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 35px rgba(255, 107, 107, 0.5);
+}
+
+.security-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.security-icon {
+    margin-left: 8px;
+    color: #4ECDC4;
+}
+
+@media (max-width: 768px) {
+    .payment-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-tabs {
+        flex-direction: column;
+    }
+    
+    .tab-button {
+        margin-bottom: 5px;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+}
+</style>
+</head>
+<body>
+<div class="background-animation">
+    <div class="light-orb"></div>
+    <div class="light-orb"></div>
+    <div class="light-orb"></div>
+    <div class="light-orb"></div>
+</div>
+<div class="dynamic-gradient"></div>
+
+<div class="container">
+    <div class="header">
+        <h1>💳 השלמת התשלום</h1>
+        <p>אנא בדוק את ההזמנה ומלא את פרטי התשלום</p>
+    </div>
+
+    <div class="payment-content">
+        <!-- סיכום הזמנה -->
+        <div class="order-summary">
+            <h2>📋 סיכום ההזמנה שלך</h2>
+            <div id="orderItems">
+                <!-- פריטי ההזמנה יוכנסו כאן -->
+            </div>
+            <div class="total-section">
+                <div class="total-row">
+                    <span>סכום ביניים:</span>
+                    <span id="subtotal">₪0</span>
+                </div>
+                <div class="total-row">
+                    <span>דמי משלוח:</span>
+                    <span>₪15</span>
+                </div>
+                <div class="total-row">
+                    <span>הנחה:</span>
+                    <span style="color: #4ECDC4;">-₪0</span>
+                </div>
+                <div class="final-total" id="finalTotal">
+                    סה"כ לתשלום: ₪0
+                </div>
+            </div>
+        </div>
+
+        <!-- טופס תשלום -->
+        <div class="payment-form">
+            <h2>💳 פרטי תשלום</h2>
+            
+            <div class="payment-tabs">
+                <button class="tab-button active" onclick="switchTab('credit')">
+                    💳 כרטיס אשראי
+                </button>
+                <button class="tab-button" onclick="switchTab('bit')">
+                    📱 ביט
+                </button>
+            </div>
+
+            <!-- תשלום כרטיס אשראי -->
+            <div id="creditSection" class="credit-section">
+                <div class="form-group">
+                    <label for="cardNumber">מספר כרטיס</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" 
+                           maxlength="19" oninput="formatCardNumber(this)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="cardName">שם בעל הכרטיס</label>
+                    <input type="text" id="cardName" placeholder="שם מלא כפי שמופיע על הכרטיס">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiryDate">תאריך תפוגה</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" 
+                               maxlength="5" oninput="formatExpiryDate(this)">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="3">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="installments">תשלומים</label>
+                    <select id="installments">
+                        <option value="1">תשלום אחד</option>
+                        <option value="3">3 תשלומים</option>
+                        <option value="6">6 תשלומים</option>
+                        <option value="12">12 תשלומים</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- תשלום ביט -->
+            <div id="bitSection" class="bit-section">
+                <div class="bit-logo">📱</div>
+                <h3 style="color: #00A8E6; margin-bottom: 20px;">תשלום באמצעות ביט</h3>
+                <div class="bit-info">
+                    <p><strong>מספר טלפון לביט:</strong> 052-123-4567</p>
+                    <p><strong>סכום לתשלום:</strong> <span id="bitAmount">₪0</span></p>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: #ccc;">
+                        לחץ על "שלח בקשת ביט" ותקבל הודעה בטלפון לאישור התשלום
+                    </p>
+                </div>
+            </div>
+
+            <button class="pay-button" onclick="processPayment()">
+                <span id="payButtonText">שלם עכשיו</span>
+            </button>
+            
+            <div class="security-info">
+                <span class="security-icon">🔒</span>
+                תשלום מאובטח ומוצפן
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let orderData = null;
+let currentTab = 'credit';
+
+// טעינת נתוני ההזמנה
+window.onload = function() {
+    loadOrderData();
+    updatePaymentButton();
+};
+
+function loadOrderData() {
+    try {
+        const data = sessionStorage.getItem('orderData');
+        if (data) {
+            orderData = JSON.parse(data);
+            displayOrderSummary();
+        } else {
+            // אם אין נתונים, הצג הזמנה לדוגמה
+            orderData = {
+                items: [
+                    { name: 'טוסט גבינה קלאסי', price: 25, quantity: 2 },
+                    { name: 'קולה', price: 12, quantity: 1 }
+                ],
+                total: 62,
+                timestamp: new Date().toLocaleString('he-IL')
+            };
+            displayOrderSummary();
+        }
+    } catch (error) {
+        console.error('שגיאה בטעינת נתוני ההזמנה:', error);
+    }
+}
+
+function displayOrderSummary() {
+    const container = document.getElementById('orderItems');
+    const subtotalElement = document.getElementById('subtotal');
+    const finalTotalElement = document.getElementById('finalTotal');
+    const bitAmountElement = document.getElementById('bitAmount');
+    
+    let html = '';
+    let subtotal = 0;
+    
+    orderData.items.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        
+        html += `
+            <div class="order-item">
+                <div class="item-details">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-quantity">כמות: ${item.quantity}</div>
+                </div>
+                <div class="item-price">₪${itemTotal}</div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+    
+    const deliveryFee = 15;
+    const discount = 0;
+    const finalTotal = subtotal + deliveryFee - discount;
+    
+    subtotalElement.textContent = `₪${subtotal}`;
+    finalTotalElement.textContent = `סה"כ לתשלום: ₪${finalTotal}`;
+    bitAmountElement.textContent = `₪${finalTotal}`;
+}
+
+function switchTab(tab) {
+    currentTab = tab;
+    
+    // עדכון כפתורי הטאבים
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // הצגת/הסתרת סקציות
+    const creditSection = document.getElementById('creditSection');
+    const bitSection = document.getElementById('bitSection');
+    
+    if (tab === 'credit') {
+        creditSection.style.display = 'block';
+        bitSection.classList.remove('active');
+    } else {
+        creditSection.style.display = 'none';
+        bitSection.classList.add('active');
+    }
+    
+    updatePaymentButton();
+}
+
+function updatePaymentButton() {
+    const payButton = document.getElementById('payButtonText');
+    
+    if (currentTab === 'credit') {
+        payButton.textContent = 'שלם עכשיו';
+    } else {
+        payButton.textContent = 'שלח בקשת ביט';
+    }
+}
+
+function formatCardNumber(input) {
+    let value = input.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+    if (formattedValue.length > 19) formattedValue = formattedValue.substr(0, 19);
+    input.value = formattedValue;
+}
+
+function formatExpiryDate(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+    input.value = value;
+}
+
+function processPayment() {
+    if (currentTab === 'credit') {
+        // בדיקת שדות כרטיס אשראי
+        const cardNumber = document.getElementById('cardNumber').value;
+        const cardName = document.getElementById('cardName').value;
+        const expiryDate = document.getElementById('expiryDate').value;
+        const cvv = document.getElementById('cvv').value;
+        
+        if (!cardNumber || !cardName || !expiryDate || !cvv) {
+            alert('אנא מלא את כל השדות');
+            return;
+        }
+        
+        if (cardNumber.replace(/\s/g, '').length < 16) {
+            alert('מספר כרטיס לא תקין');
+            return;
+        }
+        
+        if (cvv.length < 3) {
+            alert('CVV לא תקין');
+            return;
+        }
+    }
+    
+    // סימולציה של עיבוד תשלום
+    const payButton = document.querySelector('.pay-button');
+    const originalText = payButton.innerHTML;
+    
+    payButton.innerHTML = '<span>מעבד תשלום...</span>';
+    payButton.disabled = true;
+    
+    setTimeout(() => {
+        alert('התשלום בוצע בהצלחה! תודה על ההזמנה.');
+        
+        // ניקוי נתוני ההזמנה
+        sessionStorage.removeItem('orderData');
+        
+        // סגירת החלון או חזרה לדף הראשי
+        if (window.opener) {
+            window.opener.postMessage('payment_success', '*');
+            window.close();
+        } else {
+            window.location.href = 'index.html';
+        }
+    }, 2000);
+}
+
+// האזנה להודעות מהחלון האב
+window.addEventListener('message', function(event) {
+    if (event.data === 'payment_success') {
+        // ניקוי העגלה בדף הראשי
+        if (window.opener && window.opener.cart) {
+            window.opener.cart = [];
+            window.opener.updateCartDisplay();
+        }
+    }
+});
+</script>
+</body>
+</html>
