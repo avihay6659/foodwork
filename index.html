@@ -521,6 +521,29 @@
             document.getElementById('addressModal').style.display = 'none';
         }
 
+        // Mobile Menu Functions - פשוט ועובד
+        function toggleMobileMenu() {
+            var navMenu = document.getElementById('navMenu');
+            var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            if (navMenu.style.display === 'flex') {
+                navMenu.style.display = 'none';
+                mobileMenuBtn.classList.remove('active');
+            } else {
+                navMenu.style.display = 'flex';
+                navMenu.style.flexDirection = 'column';
+                mobileMenuBtn.classList.add('active');
+            }
+        }
+
+        function closeMobileMenu() {
+            var navMenu = document.getElementById('navMenu');
+            var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            navMenu.style.display = 'none';
+            mobileMenuBtn.classList.remove('active');
+        }
+
         // Close modal when clicking outside of it
         window.onclick = function(event) {
             const contactModal = document.getElementById('contactModal');
@@ -532,23 +555,6 @@
             if (event.target == addressModal) {
                 addressModal.style.display = 'none';
             }
-        }
-
-        // Mobile Menu Functions
-        function toggleMobileMenu() {
-            const navMenu = document.getElementById('navMenu');
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            
-            navMenu.classList.toggle('active');
-            mobileMenuBtn.classList.toggle('active');
-        }
-
-        function closeMobileMenu() {
-            const navMenu = document.getElementById('navMenu');
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            
-            navMenu.classList.remove('active');
-            mobileMenuBtn.classList.remove('active');
         }
     </script>
 </body>
