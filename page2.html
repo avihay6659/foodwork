@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הזמנה - אחלן טוסט</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 25%, #2d2d2d 50%, #1c1c1c 75%, #0f0f0f 100%);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.02"><circle cx="30" cy="30" r="4"/></g></svg>');
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #1a252f, #2c3e50);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            text-decoration: none;
+        }
+
+        .logo::before {
+            content: "AT";
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        }
+
+        .back-btn {
+            color: #e8e8e8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 0.7rem 1.2rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main-container {
+            padding-top: 100px;
+            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 3rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: relative;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #404040, #606060, #505050);
+            border-radius: 2px;
+            animation: lineShimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(255,255,255,0.6)); }
+        }
+
+        @keyframes lineShimmer {
+            0%, 100% { transform: translateX(-50%) scaleX(1); }
+            50% { transform: translateX(-50%) scaleX(1.2); }
+        }
+
+        /* Delivery Options */
+        .delivery-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .delivery-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .delivery-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1), 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .delivery-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #404040, #606060, #505050, #707070, #404040);
+            background-size: 200% 100%;
+            opacity: 0;
+            transition: all 0.3s ease;
+            animation: rainbowShift 3s linear infinite;
+        }
+
+        .delivery-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+            border-radius: 50%;
+        }
+
+        @keyframes rainbowShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .delivery-card:hover {
+            transform: translateY(-10px) scale(1.02) rotateX(5deg);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15), 0 15px 40px rgba(0,0,0,0.1);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .delivery-card:hover::before {
+            opacity: 1;
+        }
+
+        .delivery-card:hover::after {
+            width: 100%;
+            height: 100%;
+        }
+
+        .delivery-card.selected {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,248,255,0.9));
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        .delivery-card.selected::before {
+            opacity: 1;
+            height: 100%;
+            background: linear-gradient(135deg, #27ae60, #2ecc71, #404040);
+            z-index: -1;
+        }
+
+        .delivery-icon {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+        }
+
+        .delivery-card:hover .delivery-icon {
+            animation: bounce 0.6s ease;
+            transform: scale(1.1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) scale(1.1); }
+            40% { transform: translateY(-10px) scale(1.1); }
+            60% { transform: translateY(-5px) scale(1.1); }
+        }
+
+        .delivery-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c3e50, #34495e, #5a6c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .delivery-description {
+            color: #5a6c7d;
+            text-align: center;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .delivery-time {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .delivery-time::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .delivery-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Continue Button */
+        .continue-section {
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .continue-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #404040, #505050, #27ae60, #2ecc71, #606060);
+            background-size: 300% 300%;
+            color: white;
+            padding: 1.5rem 4rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 60px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            animation: rainbowPulse 4s ease infinite;
+            opacity: 0.4;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+
+        .continue-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.7s;
+        }
+
+        .continue-btn.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: scale(1);
+            animation: rainbowPulse 4s ease infinite, buttonGlow 2s ease-in-out infinite alternate;
+        }
+
+        .continue-btn.active:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6), 0 0 30px rgba(39, 174, 96, 0.4);
+        }
+
+        .continue-btn.active:hover::before {
+            left: 100%;
+        }
+
+        @keyframes rainbowPulse {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes buttonGlow {
+            from { filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(255,255,255,0.6)); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .delivery-options {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-container {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">אחלן טוסט</a>
+            <a href="index.html" class="back-btn">חזרה לדף הבית</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <h1 class="page-title">לחץ על האופציה המתאימה עבורך</h1>
+        
+        <div class="delivery-section">
+            <div class="delivery-options">
+                <!-- Delivery Option -->
+                <div class="delivery-card" onclick="selectDelivery('delivery')">
+                    <div class="delivery-icon">🚚</div>
+                    <h3 class="delivery-title">משלוח עד הבית</h3>
+                    <p class="delivery-description">
+                        נגיע אליכם עד הבית עם הטוסטים הטריים והטעימים
+                    </p>
+                    <div class="delivery-time">זמן משלוח: 25-40 דקות</div>
+                    <div class="delivery-price">עלות משלוח: ₪15</div>
+                </div>
+
+                <!-- Pickup Option -->
+                <div class="delivery-card" onclick="selectDelivery('pickup')">
+                    <div class="delivery-icon">🏪</div>
+                    <h3 class="delivery-title">איסוף עצמי</h3>
+                    <p class="delivery-description">
+                        בואו לאסוף את ההזמנה ישירות מהחנות והחסיכו בעלות המשלוח
+                    </p>
+                    <div class="delivery-time">זמן הכנה: 15-25 דקות</div>
+                    <div class="delivery-price">ללא עלות נוספת</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="continue-section">
+            <button class="continue-btn" id="continueBtn" onclick="continueToMenu()">
+                המשך להזמנה
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let selectedDeliveryType = null;
+
+        function selectDelivery(type) {
+            // Remove previous selection
+            document.querySelectorAll('.delivery-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selection to clicked card
+            event.currentTarget.classList.add('selected');
+            
+            selectedDeliveryType = type;
+            
+            // Enable continue button
+            const continueBtn = document.getElementById('continueBtn');
+            continueBtn.classList.add('active');
+        }
+
+        function continueToMenu() {
+            if (selectedDeliveryType) {
+                // Here you can redirect to the menu page or next step
+                // For now, we'll show an alert
+                if (selectedDeliveryType === 'delivery') {
+                    alert('נבחר משלוח עד הבית! עוברים לתפריט...');
+                } else {
+                    alert('נבחר איסוף עצמי! עוברים לתפריט...');
+                }
+                
+                // You can redirect to menu page here
+                // window.location.href = 'menu.html';
+            }
+        }
+    </script>
+</body>
+</html>
