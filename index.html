@@ -75,6 +75,13 @@
             display: none;
             flex-direction: column;
             cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu:hover {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
         }
 
         .mobile-menu span {
@@ -83,6 +90,20 @@
             background: white;
             margin: 3px 0;
             transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Animation when menu is active */
+        .mobile-menu.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .mobile-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
         }
 
         @media (max-width: 768px) {
@@ -399,7 +420,7 @@
                 <li class="nav-item"><a href="#" onclick="openContactModal(); closeMobileMenu();">צור קשר</a></li>
                 <li class="nav-item"><a href="#" onclick="openAddressModal(); closeMobileMenu();">כתובת העסק</a></li>
             </ul>
-            <div class="mobile-menu" onclick="toggleMobileMenu()">
+            <div class="mobile-menu" id="mobileMenuBtn" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -511,6 +532,23 @@
             if (event.target == addressModal) {
                 addressModal.style.display = 'none';
             }
+        }
+
+        // Mobile Menu Functions
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            navMenu.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
         }
     </script>
 </body>
