@@ -88,6 +88,23 @@
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 100%;
+                background: linear-gradient(135deg, #1a252f, #2c3e50);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-item {
+                margin: 0.5rem 0;
+                text-align: center;
             }
             
             .mobile-menu {
@@ -377,12 +394,12 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">אחלן טוסט</div>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="#home">ראשי</a></li>
-                <li class="nav-item"><a href="#" onclick="openContactModal()">צור קשר</a></li>
-                <li class="nav-item"><a href="#" onclick="openAddressModal()">כתובת העסק</a></li>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="#home" onclick="closeMobileMenu()">ראשי</a></li>
+                <li class="nav-item"><a href="#" onclick="openContactModal(); closeMobileMenu();">צור קשר</a></li>
+                <li class="nav-item"><a href="#" onclick="openAddressModal(); closeMobileMenu();">כתובת העסק</a></li>
             </ul>
-            <div class="mobile-menu">
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
