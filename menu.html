@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>דף הזמנות</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* אנימציה ברקע עם אורות וצבעים */
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* כדורי אור צבעוניים */
+.light-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: lightDance 8s ease-in-out infinite;
+}
+
+.light-orb:nth-child(1) {
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, #FF6B6B 0%, #FF8E53 50%, transparent 100%);
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+    box-shadow: 0 0 60px #FF6B6B, 0 0 120px #FF6B6B, 0 0 180px #FF6B6B;
+}
+
+.light-orb:nth-child(2) {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, #4ECDC4 0%, #44A08D 50%, transparent 100%);
+    top: 20%;
+    right: 15%;
+    animation-delay: 2s;
+    box-shadow: 0 0 80px #4ECDC4, 0 0 160px #4ECDC4, 0 0 240px #4ECDC4;
+}
+
+.light-orb:nth-child(3) {
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, #FFE66D 0%, #FF6B35 50%, transparent 100%);
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+    box-shadow: 0 0 70px #FFE66D, 0 0 140px #FFE66D, 0 0 210px #FFE66D;
+}
+
+.light-orb:nth-child(4) {
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, #B06AB3 0%, #4568DC 50%, transparent 100%);
+    bottom: 30%;
+    right: 20%;
+    animation-delay: 6s;
+    box-shadow: 0 0 50px #B06AB3, 0 0 100px #B06AB3, 0 0 150px #B06AB3;
+}
+
+.light-orb:nth-child(5) {
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, #FF9A8B 0%, #A8E6CF 50%, transparent 100%);
+    top: 60%;
+    left: 50%;
+    animation-delay: 1s;
+    box-shadow: 0 0 40px #FF9A8B, 0 0 80px #FF9A8B, 0 0 120px #FF9A8B;
+}
+
+.light-orb:nth-child(6) {
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, #667eea 0%, #764ba2 50%, transparent 100%);
+    top: 5%;
+    left: 60%;
+    animation-delay: 3s;
+    box-shadow: 0 0 90px #667eea, 0 0 180px #667eea, 0 0 270px #667eea;
+}
+
+/* אורות נוספים קטנים */
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    animation: sparkle 3s linear infinite;
+}
+
+.sparkle:nth-child(7) { top: 15%; left: 25%; animation-delay: 0s; }
+.sparkle:nth-child(8) { top: 45%; right: 30%; animation-delay: 1s; }
+.sparkle:nth-child(9) { bottom: 25%; left: 40%; animation-delay: 2s; }
+.sparkle:nth-child(10) { top: 75%; right: 15%; animation-delay: 0.5s; }
+.sparkle:nth-child(11) { top: 35%; left: 70%; animation-delay: 1.5s; }
+.sparkle:nth-child(12) { bottom: 45%; right: 50%; animation-delay: 2.5s; }
+
+@keyframes lightDance {
+    0%, 100% {
+        transform: translateY(0px) translateX(0px) scale(1);
+        opacity: 0.6;
+    }
+    25% {
+        transform: translateY(-30px) translateX(20px) scale(1.1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-60px) translateX(-10px) scale(0.9);
+        opacity: 1;
+    }
+    75% {
+        transform: translateY(-30px) translateX(-25px) scale(1.05);
+        opacity: 0.7;
+    }
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 20px white;
+    }
+}
+
+/* רקע גרדיאנט דינמי צבעוני */
+.dynamic-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(255, 107, 107, 0.1) 0%,
+        rgba(78, 205, 196, 0.1) 25%,
+        rgba(255, 230, 109, 0.1) 50%,
+        rgba(176, 106, 179, 0.1) 75%,
+        rgba(255, 154, 139, 0.1) 100%);
+    animation: colorWave 12s ease-in-out infinite;
+    z-index: -2;
+}
+
+@keyframes colorWave {
+    0%, 100% {
+        background: linear-gradient(45deg, 
+            rgba(255, 107, 107, 0.1) 0%,
+            rgba(78, 205, 196, 0.1) 25%,
+            rgba(255, 230, 109, 0.1) 50%,
+            rgba(176, 106, 179, 0.1) 75%,
+            rgba(255, 154, 139, 0.1) 100%);
+    }
+    33% {
+        background: linear-gradient(135deg, 
+            rgba(78, 205, 196, 0.15) 0%,
+            rgba(255, 230, 109, 0.15) 25%,
+            rgba(176, 106, 179, 0.15) 50%,
+            rgba(255, 154, 139, 0.15) 75%,
+            rgba(255, 107, 107, 0.15) 100%);
+    }
+    66% {
+        background: linear-gradient(225deg, 
+            rgba(255, 230, 109, 0.12) 0%,
+            rgba(176, 106, 179, 0.12) 25%,
+            rgba(255, 154, 139, 0.12) 50%,
+            rgba(255, 107, 107, 0.12) 75%,
+            rgba(78, 205, 196, 0.12) 100%);
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px 0;
+    border-bottom: 2px solid #333;
+    position: relative;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(78, 205, 196, 0.3);
+    animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+    from {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(78, 205, 196, 0.3);
+    }
+    to {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 107, 107, 0.5), 0 0 80px rgba(255, 230, 109, 0.3);
+    }
+}
+
+.main-content {
+    display: flex;
+    gap: 30px;
+}
+
+.order-cart {
+    min-width: 280px;
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(40, 40, 40, 0.8));
+    border-radius: 15px;
+    padding: 20px;
+    height: fit-content;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    position: sticky;
+    top: 20px;
+    box-shadow: 0 8px 32px rgba(78, 205, 196, 0.1), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    animation: cardPulse 4s ease-in-out infinite;
+}
+
+@keyframes cardPulse {
+    0%, 100% {
+        box-shadow: 0 8px 32px rgba(78, 205, 196, 0.1), 
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        box-shadow: 0 12px 40px rgba(255, 107, 107, 0.2), 
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 0 20px rgba(255, 230, 109, 0.1);
+    }
+}
+
+.order-cart h3 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-name {
+    color: #ffffff;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.cart-item-price {
+    color: #4CAF50;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.cart-remove {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+.cart-remove:hover {
+    background-color: #cc0000;
+}
+
+.cart-total {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #4CAF50;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.cart-empty {
+    text-align: center;
+    color: #ccc;
+    font-style: italic;
+    padding: 20px 0;
+}
+
+.sidebar {
+    min-width: 200px;
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(40, 40, 40, 0.8));
+    border-radius: 15px;
+    padding: 20px;
+    height: fit-content;
+    border: 2px solid transparent;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(176, 106, 179, 0.1), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.nav-button {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: linear-gradient(145deg, rgba(42, 42, 42, 0.8), rgba(60, 60, 60, 0.6));
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: right;
+    font-size: 1rem;
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.nav-button:hover::before {
+    left: 100%;
+}
+
+.nav-button:hover {
+    background: linear-gradient(145deg, rgba(78, 205, 196, 0.3), rgba(255, 107, 107, 0.2));
+    border-color: rgba(78, 205, 196, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(78, 205, 196, 0.3);
+}
+
+.nav-button.active {
+    background: linear-gradient(145deg, rgba(78, 205, 196, 0.4), rgba(255, 107, 107, 0.3));
+    border-color: rgba(78, 205, 196, 0.8);
+    box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+}
+
+.content-area {
+    flex: 1;
+}
+
+.category {
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(40, 40, 40, 0.8));
+    border: 2px solid transparent;
+    border-radius: 15px;
+    padding: 25px;
+    display: none;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 12px 40px rgba(255, 154, 139, 0.1), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.category::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 107, 107, 0.05) 0%, 
+        rgba(78, 205, 196, 0.05) 50%, 
+        rgba(255, 230, 109, 0.05) 100%);
+    pointer-events: none;
+    animation: categoryShimmer 6s ease-in-out infinite;
+}
+
+@keyframes categoryShimmer {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+.category.active {
+    display: block;
+    animation: categoryAppear 0.5s ease-out;
+}
+
+@keyframes categoryAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.category:hover {
+    border-color: rgba(78, 205, 196, 0.3);
+    box-shadow: 0 16px 50px rgba(255, 107, 107, 0.2), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.category h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #444;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    transition: background-color 0.2s ease;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item:hover {
+    background-color: #2a2a2a;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 8px;
+}
+
+.item-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.item-name {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin-left: 15px;
+}
+
+.item-price {
+    font-weight: bold;
+    color: #4CAF50;
+    font-size: 1.1rem;
+    margin-left: 15px;
+}
+
+.add-btn {
+    background: linear-gradient(145deg, rgba(78, 205, 196, 0.8), rgba(255, 107, 107, 0.6));
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+}
+
+.add-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+.add-btn:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+.add-btn:hover {
+    background: linear-gradient(145deg, rgba(255, 107, 107, 0.9), rgba(255, 230, 109, 0.7));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+}
+
+.order-section {
+    background-color: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 40px;
+}
+
+.order-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.order-summary {
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.total {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #4CAF50;
+    text-align: center;
+    padding: 15px;
+    background-color: #333;
+    border-radius: 8px;
+}
+
+.order-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.order-btn:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        min-width: auto;
+    }
+    
+    .nav-button {
+        display: inline-block;
+        width: auto;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .order-cart {
+        min-width: auto;
+        position: static;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+}
+</style>
+</head>
+<body>
+<div class="background-animation">
+    <div class="light-orb"></div>
+    <div class="light-orb"></div>
+    <div class="light-orb"></div>
+    <div class="light-orb"></div>
+    <div class="light-orb"></div>
+    <div class="light-orb"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+</div>
+<div class="dynamic-gradient"></div>
+
+<div class="container">
+<div class="header">
+    <h1>🍽️ דף הזמנות 🍽️</h1>
+    <p>בחר מהתפריט שלנו</p>
+</div>
+
+<div class="main-content">
+    <div class="sidebar">
+        <h3>תפריט</h3>
+        <button class="nav-button active" onclick="showCategory('toasts')">🥪 הטוסטים שלנו</button>
+        <button class="nav-button" onclick="showCategory('salads')">🥗 סלטים</button>
+        <button class="nav-button" onclick="showCategory('sides')">🍟 תוספות</button>
+        <button class="nav-button" onclick="showCategory('drinks')">🥤 שתייה</button>
+    </div>
+
+    <div class="content-area">
+        <div class="category active" id="toasts">
+            <h2>🥪 הטוסטים שלנו</h2>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">טוסט גבינה קלאסי</span>
+                    <span class="item-price">₪25</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('טוסט גבינה קלאסי', 25)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">טוסט גבינה ועגבנייה</span>
+                    <span class="item-price">₪28</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('טוסט גבינה ועגבנייה', 28)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">טוסט תונה</span>
+                    <span class="item-price">₪32</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('טוסט תונה', 32)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">טוסט הודו ופטרייה</span>
+                    <span class="item-price">₪35</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('טוסט הודו ופטרייה', 35)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">טוסט מיוחד של הבית</span>
+                    <span class="item-price">₪38</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('טוסט מיוחד של הבית', 38)">הוסף להזמנה</button>
+            </div>
+        </div>
+
+        <div class="category" id="salads">
+            <h2>🥗 סלטים</h2>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">סלט ירוק</span>
+                    <span class="item-price">₪28</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('סלט ירוק', 28)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">סלט יווני</span>
+                    <span class="item-price">₪32</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('סלט יווני', 32)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">סלט קיסר</span>
+                    <span class="item-price">₪35</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('סלט קיסר', 35)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">סלט תונה</span>
+                    <span class="item-price">₪38</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('סלט תונה', 38)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">סלט הבית המיוחד</span>
+                    <span class="item-price">₪42</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('סלט הבית המיוחד', 42)">הוסף להזמנה</button>
+            </div>
+        </div>
+
+        <div class="category" id="sides">
+            <h2>🍟 תוספות</h2>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">צ'יפס</span>
+                    <span class="item-price">₪18</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('צ\'יפס', 18)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">טבעות בצל</span>
+                    <span class="item-price">₪22</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('טבעות בצל', 22)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">כנפיים חריפות</span>
+                    <span class="item-price">₪35</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('כנפיים חריפות', 35)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">חצילים מטוגנים</span>
+                    <span class="item-price">₪25</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('חצילים מטוגנים', 25)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">מוצרלה סטיקס</span>
+                    <span class="item-price">₪28</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('מוצרלה סטיקס', 28)">הוסף להזמנה</button>
+            </div>
+        </div>
+
+        <div class="category" id="drinks">
+            <h2>🥤 שתייה</h2>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">מים</span>
+                    <span class="item-price">₪8</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('מים', 8)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">קולה</span>
+                    <span class="item-price">₪12</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('קולה', 12)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">מיץ תפוזים טבעי</span>
+                    <span class="item-price">₪15</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('מיץ תפוזים טבעי', 15)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">קפה</span>
+                    <span class="item-price">₪10</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('קפה', 10)">הוסף להזמנה</button>
+            </div>
+            <div class="menu-item">
+                <div class="item-info">
+                    <span class="item-name">בירה</span>
+                    <span class="item-price">₪18</span>
+                </div>
+                <button class="add-btn" onclick="addToCart('בירה', 18)">הוסף להזמנה</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-cart">
+        <h3>🛒 ההזמנה שלי</h3>
+        <div id="cartItems">
+            <div class="cart-empty">עדיין לא נבחרו פריטים</div>
+        </div>
+        <div class="cart-total" id="cartTotal">
+            סה"כ: ₪0
+        </div>
+        <button class="order-btn" onclick="placeOrder()">בצע הזמנה</button>
+    </div>
+</div>
+
+<div class="order-section">
+    <h3>📋 סיכום הזמנה</h3>
+    <div class="order-summary">
+        <p style="text-align: center; color: #ccc;">עדיין לא נבחרו פריטים</p>
+    </div>
+    <div class="total">
+        סה"כ: ₪0
+    </div>
+    <button class="order-btn">בצע הזמנה</button>
+</div>
+</div>
+
+<script>
+let cart = [];
+
+function showCategory(categoryId) {
+    // הסתר את כל הקטגוריות
+    const categories = document.querySelectorAll('.category');
+    categories.forEach(category => {
+        category.classList.remove('active');
+    });
+
+    // הסתר את כל הכפתורים הפעילים
+    const buttons = document.querySelectorAll('.nav-button');
+    buttons.forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // הצג את הקטגוריה הנבחרת
+    document.getElementById(categoryId).classList.add('active');
+
+    // סמן את הכפתור הפעיל
+    event.target.classList.add('active');
+}
+
+function addToCart(itemName, itemPrice) {
+    const existingItem = cart.find(item => item.name === itemName);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            name: itemName,
+            price: itemPrice,
+            quantity: 1
+        });
+    }
+    
+    updateCartDisplay();
+}
+
+function removeFromCart(itemName) {
+    cart = cart.filter(item => item.name !== itemName);
+    updateCartDisplay();
+}
+
+function updateCartDisplay() {
+    const cartItemsContainer = document.getElementById('cartItems');
+    const cartTotalElement = document.getElementById('cartTotal');
+    
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div class="cart-empty">עדיין לא נבחרו פריטים</div>';
+        cartTotalElement.textContent = 'סה"כ: ₪0';
+        return;
+    }
+    
+    let cartHTML = '';
+    let total = 0;
+    
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        
+        cartHTML += `
+            <div class="cart-item">
+                <div class="cart-item-name">${item.name} ${item.quantity > 1 ? `(x${item.quantity})` : ''}</div>
+                <div class="cart-item-price">₪${itemTotal}</div>
+                <button class="cart-remove" onclick="removeFromCart('${item.name}')">הסר</button>
+            </div>
+        `;
+    });
+    
+    cartItemsContainer.innerHTML = cartHTML;
+    cartTotalElement.textContent = `סה"כ: ₪${total}`;
+}
+
+function placeOrder() {
+    if (cart.length === 0) {
+        alert('אנא הוסף פריטים להזמנה');
+        return;
+    }
+    
+    alert('הזמנה בוצעה בהצלחה! תודה רבה.');
+    cart = [];
+    updateCartDisplay();
+}
+</script>
+</body>
+</html>
